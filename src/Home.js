@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   makeStyles,
   AppBar,
@@ -43,6 +43,17 @@ import TrendingUp from '@material-ui/icons/TrendingUp'
 import ZoomIn from '@material-ui/icons/ZoomIn';
 
 const useStyles = makeStyles((theme) => ({
+  '@global': {
+    '*::-webkit-scrollbar': {
+      width: '0.4em'
+    },
+    '*::-webkit-scrollbar-track': {
+      '-webkit-box-shadow': `inset 0 0 6px ${theme.palette.background.defaut}`
+    },
+    '*::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0,0,0,.1)',
+    }
+  },
   root: {
     backgroundColor: theme.palette.background.dark,
   },
@@ -166,8 +177,13 @@ const videos = [
 ];
 
 function Home({ darkMode, setDarkMode }) {
+  const [open, setOpen] = useState(true);
   const classes = useStyles();
   const theme = useTheme();
+
+  const toggleMenu = () => {
+    setOpen(!open)
+  }
 
   return (
     <div className={classes.root}>
@@ -177,6 +193,7 @@ function Home({ darkMode, setDarkMode }) {
             edge='start'
             className={classes.menuIcon}
             aria-label='menu'
+            onClick={toggleMenu}
           >
             <MenuIcon />
           </IconButton>
@@ -214,7 +231,7 @@ function Home({ darkMode, setDarkMode }) {
         </Toolbar>
       </AppBar>
       <Box display='flex'>
-        <Hidden mdDown>
+        <Hidden mdDown={open}>
           <Drawer
             className={classes.drawer}
             variant='permanent'
